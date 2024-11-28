@@ -19,6 +19,7 @@
     "mongoose-encryption": "^2.1.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.9.1",

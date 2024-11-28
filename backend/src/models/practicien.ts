@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import mongooseEncryption from 'mongoose-encryption';
 
 interface IPraticien extends Document {
   nom: string;
@@ -21,6 +22,11 @@ const PraticienSchema: Schema = new Schema({
   ville: { type: String, required: true },
   visites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Visite' }]
 });
+
+const encryptionKey = process.env.ENCRYPTION_KEY
+const signingKey = process.env.SIGNING_KEY
+
+PraticienSchema.plugin(mongooseEncryption, { encryptionKey, signingKey, encryptedFields: ['nom','prenom','tel', 'email','rue', 'code_postal', 'ville'] });
 
 export default mongoose.model<IPraticien>('Praticien', PraticienSchema);
 
