@@ -8,7 +8,7 @@ export interface IVisite extends Document {
     motif: mongoose.Types.ObjectId;
   }
   
-const VisiteSchema: Schema = new Schema({
+const VisiteSchema: Schema = new Schema<IVisite>({
    date_visite: { type: Date, required: true },
    commentaire: { type: String, required: true },
    visiteur: { type: mongoose.Schema.Types.ObjectId, ref: 'Visiteur', required: true },

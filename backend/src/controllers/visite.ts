@@ -17,7 +17,7 @@ export const createVisite = async (req: Request, res: Response) => {
 
 export const getVisites = async (_req: Request, res: Response) => {
   try {
-    const visites = await Visite.find();
+    const visites = await Visite.find().populate('visiteur praticien motif');
     res.status(200).json(visites);
   } catch (error) {
     if (error instanceof Error) {
@@ -27,4 +27,6 @@ export const getVisites = async (_req: Request, res: Response) => {
     }
   }
 };
+
+
 
