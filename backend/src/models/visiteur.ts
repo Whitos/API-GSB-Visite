@@ -1,7 +1,6 @@
-import mongoose, { Schema, Document, CallbackError } from 'mongoose';
+import mongoose, { Schema, Document} from 'mongoose';
 import mongooseEncryption from 'mongoose-encryption';
 import dotenv from 'dotenv';
-import { hash } from 'bcrypt'
 
 
 dotenv.config();
@@ -28,16 +27,6 @@ const VisiteurSchema: Schema = new Schema({
   visites: [{ type: Schema.Types.ObjectId, ref: 'Visite' }]
 });
 
-VisiteurSchema.pre<IVisiteur>('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  try {
-    const hashedPassword = await hash(this.password, 10);
-    this.password = hashedPassword;
-    next();
-  } catch (error) {
-    next(error as CallbackError);
-  }
-});
 
 const encryptionKey = process.env.ENCRYPTION_KEY
 const signingKey = process.env.SIGNING_KEY
