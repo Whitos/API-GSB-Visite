@@ -1,29 +1,29 @@
 import { Request, Response } from 'express';
-import User from '../models/visiteur';
+import Visiteur from '../models/visiteur';
 import { hash } from 'bcrypt';
 
-export const createUser = async (req: Request, res: Response) => {
+export const createVisiteur = async (req: Request, res: Response) => {
   try {
     // Hasher le mot de passe avant de sauvegarder
     const hashedPassword = await hash(req.body.password, 10);
 
     // Créer un nouvel utilisateur avec le mot de passe hashé
-    const user = new User({
+    const visiteur = new Visiteur({
       ...req.body,
       password: hashedPassword
     });
 
     // Sauvegarder l'utilisateur et répondre
-    const savedUser = await user.save();
+    const savedUser = await visiteur.save();
     res.status(201).json(savedUser);
   } catch (error) {
     res.status(400).json({ message: error instanceof Error ? error.message : 'Unknown error' });
   }
 };
 
-export const getUsers = async (_req: Request, res: Response) => {
+export const getVisiteurs = async (_req: Request, res: Response) => {
   try {
-    const users = await User.find();  //const users = await User.find({}, '-password'); // Exclure le mot de passe a faire plus tard 
+    const users = await Visiteur.find();  //const users = await User.find({}, '-password'); // Exclure le mot de passe a faire plus tard 
     res.status(200).json(users);
   } catch (error) {
     if (error instanceof Error) {
