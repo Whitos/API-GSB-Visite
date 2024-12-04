@@ -1,4 +1,3 @@
-
 backend/package-lock.json
 backend/package.json
 backend/node_modules/.package-lock.json
@@ -2249,5 +2248,9 @@ backend/node_modules/.package-lock.json
 backend/package.json
 backend/package-lock.json
 backend/package-lock.json
-backend/package.json
 backend/node_modules/.package-lock.json
+backend/node_modules/@types/dotenv/LICENSE
+backend/node_modules/@types/dotenv/README.md
+backend/node_modules/.package-lock.json
+backend/node_modules/@types/dotenv/package.json
+backend/package.json
