@@ -19,7 +19,7 @@ app.use('/api/practiciens', praticienRoutes);
 app.use('/api/visites', visiteRoutes);
 app.use('/api/motifs', motifRoutes);
 
-const mongoURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}`;
+const mongoURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}${process.env.MONGO_NAME}`;
 
 // MongoDB Connection
 mongoose.connect(mongoURI)
