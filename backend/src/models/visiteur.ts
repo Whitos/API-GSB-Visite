@@ -28,9 +28,8 @@ const VisiteurSchema: Schema = new Schema({
 });
 
 
-const encryptionKey = process.env.ENCRYPTION_KEY
 const signingKey = process.env.SIGNING_KEY
 
-VisiteurSchema.plugin(mongooseEncryption, { encryptionKey, signingKey, encryptedFields: ['nom','prenom','tel', 'email','date_embauche', 'login'] });
+VisiteurSchema.plugin(mongooseEncryption, {  secret: signingKey, encryptedFields: ['nom','prenom','tel', 'email','date_embauche', 'login'] });
 
 export default mongoose.model<IVisiteur>('Visiteur', VisiteurSchema);
