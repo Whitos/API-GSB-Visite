@@ -37,7 +37,6 @@ app.use('/api/visiteurs', visiteurRoutes);
 app.use('/api/practiciens', praticienRoutes);
 app.use('/api/visites', visiteRoutes);
 app.use('/api/motifs', motifRoutes);
-app.use('api/auth', visiteurRoutes);
 
 
 export default app;

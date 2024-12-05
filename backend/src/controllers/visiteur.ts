@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import Visiteur from '../models/visiteur';
-import { compare, hash } from 'bcrypt';
+import bcrypt, { compare, hash } from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 
 export const visiteurValidators = [
   body('email')
@@ -100,7 +99,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
 	await visiteur.save();
 	res.status(201).json({ message: 'Visiteur créé !' });
   } catch (error) {
-	res.status(500).json({ error: 'Erreur interne.' });
+	res.status(500).json({ error: 'Erreur interne!!!.' });
   }
 };
 
