@@ -59,8 +59,9 @@ export const getVisiteurById = async (req: Request, res: Response): Promise<void
       return;
     }
     
-    // Récupérer le visiteur par ID et exclure le mot de passe
-    const visiteur = await Visiteur.findById(visiteurId, '-password');
+    // Récupérer le visiteur par ID, exclure le mot de passe et populer les praticiens du portefeuille
+    const visiteur = await Visiteur.findById(visiteurId, '-password')
+      .populate('portefeuillePraticiens');
     
     if (!visiteur) {
       res.status(404).json({ message: 'Visiteur non trouvé' });
@@ -215,5 +216,53 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ 
       message: error instanceof Error ? error.message : 'Erreur lors de la connexion' 
     });
+  }
+};
+
+export const ajouterPraticienAuPortefeuille = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const visiteurId = req.params.id;
+    const praticienId = req.body._id;
+    
+    const visiteur = await Visiteur.findById(visiteurId);
+    if (!visiteur) {
+      res.status(404).json({ message: 'Visiteur non trouvé' });
+      return;
+    }
+    
+    if (!visiteur.portefeuillePraticiens) {
+      visiteur.portefeuillePraticiens = [];
+    }
+    
+    if (!visiteur.portefeuillePraticiens.some(id => id.toString() === praticienId)) {
+      visiteur.portefeuillePraticiens.push(praticienId);
+      await visiteur.save();
+      res.status(201).json({ message: 'Praticien ajouté au portefeuille' });
+    } else {
+      res.status(400).json({ message: 'Ce praticien est déjà dans le portefeuille' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de l\'ajout du praticien' });
+  }
+};
+
+/**
+ * Récupérer les praticiens du portefeuille d'un visiteur
+ */
+export const getPraticiensPortefeuille = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const visiteurId = req.params.id;
+    
+    // Récupérer le visiteur avec son portefeuille
+    const visiteur = await Visiteur.findById(visiteurId).populate('portefeuillePraticiens');
+    
+    if (!visiteur) {
+      res.status(404).json({ message: 'Visiteur non trouvé' });
+      return;
+    }
+    
+    res.status(200).json(visiteur.portefeuillePraticiens || []);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération du portefeuille' });
   }
 };

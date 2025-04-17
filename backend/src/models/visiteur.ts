@@ -13,6 +13,7 @@ interface IVisiteur extends Document {
   password: string;
   date_embauche: Date;
   visites?: Schema.Types.ObjectId[];
+  portefeuillePraticiens?: Schema.Types.ObjectId[];
 }
 
 const VisiteurSchema: Schema = new Schema({
@@ -22,7 +23,8 @@ const VisiteurSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   date_embauche: { type: Date, required: false },
-  visites: [{ type: Schema.Types.ObjectId, ref: 'Visite' }]
+  visites: [{ type: Schema.Types.ObjectId, ref: 'Visite' }],
+  portefeuillePraticiens: [{ type: Schema.Types.ObjectId, ref: 'Praticien' }]
 });
 
 

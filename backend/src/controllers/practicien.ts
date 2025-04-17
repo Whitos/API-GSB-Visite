@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Practicien from '../models/practicien';
-import practicien from '../models/practicien';
 
 export const createPracticien = async (req: Request, res: Response) => {
   try {
