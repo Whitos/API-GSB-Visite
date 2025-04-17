@@ -31,7 +31,6 @@ export const loginValidators = [
 ];
 
 
-
 /**
  * Récupérer tous les visiteurs
  */
@@ -76,6 +75,43 @@ export const getVisiteurById = async (req: Request, res: Response): Promise<void
   }
 };
 
+/**
+ * Mettre à jour un visiteur par son ID
+ */
+export const updateVisiteur = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const visiteurId = req.params.id;
+    const { email, nom, prenom, password } = req.body;
+
+    // Vérifier si l'ID est valide
+    if (!visiteurId.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400).json({ message: 'ID de visiteur invalide' });
+      return;
+    }
+
+    // Vérifier si le visiteur existe
+    const existingVisiteur = await Visiteur.findById(visiteurId);
+    if (!existingVisiteur) {
+      res.status(404).json({ message: 'Visiteur non trouvé' });
+      return;
+    }
+
+    // Mettre à jour les champs
+    if (email) existingVisiteur.email = email;
+    if (nom) existingVisiteur.nom = nom;
+    if (prenom) existingVisiteur.prenom = prenom;
+    if (password) existingVisiteur.password = await hash(password, 10); // Hacher le mot de passe
+
+    // Sauvegarder les modifications
+    await existingVisiteur.save();
+
+    res.status(200).json({ message: 'Visiteur mis à jour avec succès', visiteur: existingVisiteur });
+  } catch (error) {
+    res.status(500).json({
+      message: error instanceof Error ? error.message : 'Erreur lors de la mise à jour du visiteur',
+    });
+  }
+};
 /**
  * Supprimer un visiteur par son ID
  */
