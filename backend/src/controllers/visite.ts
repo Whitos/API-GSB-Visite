@@ -1,10 +1,18 @@
 import { Request, Response } from 'express';
 import Visite from '../models/visite';
+import Practicien from '../models/practicien';
 
 export const createVisite = async (req: Request, res: Response) => {
   try {
     const visite = new Visite(req.body);
     const savedVisite = await visite.save();
+
+    // Add the visite to the praticien's visites array
+    await Practicien.updateOne(
+      { _id: req.body.praticien },
+      { $push: { visites: savedVisite._id } }
+    );
+
     res.status(201).json(savedVisite);
   } catch (error) {
     if (error instanceof Error) {
